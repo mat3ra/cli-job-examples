@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# ---------------------------------------------------------------- #
+#                                                                  #
+#  Example job submission script for Mat3ra.com platform           #
+#                                                                  #
+#  Shows resource manager directives for:                          #
+#                                                                  #
+#    1. the name of the job                (-N)                    #
+#    2. the number of nodes to be used     (-l nodes=)             #
+#    3. the number of processors per node  (-l ppn=)               #
+#    4. the walltime in dd:hh:mm:ss format (-l walltime=)          #
+#    5. queue                              (-q) D, OR, OF, SR, SF  #
+#    6. merging standard output and error  (-j oe)                 #
+#    7. email about job abort, begin, end  (-m abe)                #
+#    8. email address to use               (-M)                    #
+#                                                                  #
+#  For more info visit https://docs.mat3ra.com/jobs-cli/overview/  #
+# ---------------------------------------------------------------- #
+
+#PBS -N LAMMPS-NEB
+#PBS -j oe
+#PBS -l nodes=2
+#PBS -l ppn=44
+#PBS -l walltime=00:01:00:00
+#PBS -q SF
+#PBS -m abe
+##PBS -M info@mat3ra.com
+#
+## Uncomment the line below and put a desired project name, e.g.:
+##      "seminar-default", or "john-projectname".
+## NOTE: this is required when using organizational accounts.
+## more at https://docs.mat3ra.com/jobs-cli/batch-scripts/directives/
+## The job will be charged to the corresponding project.
+## When commented out, the default project for user is assumed.
+##PBS -A <PROJECT_NAME_IN_ACCOUNTING_SYSTEM>
+
+# go to the job working directory
+cd $PBS_O_WORKDIR
+
+module load lammps/2025.07.22.2-gnu
+module load mpi/ompi-4.1.1
+
+# also adjust the partition number in the in.neb.sivac file
+# variable        u uloop 22
+mpirun -np $PBS_NP -hostfile $PBS_NODEFILE $EXEC_CMD lmp -partition 22x4 -in in.neb.sivac
+# mpirun -np $PBS_NP -hostfile $PBS_NODEFILE --mca pml ucx --mca btl ^openib $EXEC_CMD lmp -partition 22x4 -in in.neb.sivac

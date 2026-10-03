@@ -18,6 +18,11 @@ melt is available under [emin](./emin) directory.
 ### LAMMPS+M3GNet
 The example under the [m3gnet](./m3gnet) directory uses M3GNet pair potential.
 
+### NEB calculation
+An example calculation of NEB is available under [neb](./neb) directory.
+The example uses the SIVAC potential. The calculation is run on multiple nodes:
+2 nodes with 44 cores each. Adapted from the original example in the LAMMPS
+project: https://github.com/lammps/lammps/blob/develop/examples/neb/
 
 ## Links
 [^1]: https://docs.lammps.org/Manual.html
