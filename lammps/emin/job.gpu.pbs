@@ -34,8 +34,9 @@
 ## When commented out, the default project for user is assumed.
 ##PBS -A <PROJECT_NAME_IN_ACCOUNTING_SYSTEM>
 
-# load module
-module load lammps/2024.08.29.2-i-2023.1-cuda-12.4
+# if you need to run jobs on multiple nodes, you need to load compatible host
+# MPI module, see NEB example.
+module load lammps/2025.07.22.2-intel-2023.1-cuda-12.8
 
 # go to the job working directory
 cd $PBS_O_WORKDIR
@@ -45,4 +46,4 @@ cd $PBS_O_WORKDIR
 # - pair_style	lj/cut 2.5
 # + pair_style	lj/cut/gpu 2.5
 # logs are written to log.lammps, it can be specified with `-l output.log`
-mpirun -np $PBS_NP lmp -sf gpu -i in.min
+$EXEC_CMD mpirun -np $PBS_NP lmp -sf gpu -i in.min

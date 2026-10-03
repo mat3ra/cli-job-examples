@@ -18,12 +18,12 @@
 #  For more info visit https://docs.mat3ra.com/jobs-cli/overview/  #
 # ---------------------------------------------------------------- #
 
-#PBS -N LAMMPS-TEST
+#PBS -N LAMMPS-NEB
 #PBS -j oe
-#PBS -l nodes=1
-#PBS -l ppn=1
-#PBS -l walltime=00:00:10:00
-#PBS -q D
+#PBS -l nodes=2
+#PBS -l ppn=44
+#PBS -l walltime=00:01:00:00
+#PBS -q SF
 #PBS -m abe
 ##PBS -M info@mat3ra.com
 #
@@ -38,8 +38,10 @@
 # go to the job working directory
 cd $PBS_O_WORKDIR
 
-# if you need to run jobs on multiple nodes, you need to load compatible host
-# MPI module, see NEB example.
 module load lammps/2025.07.22.2-gnu
+module load mpi/ompi-4.1.1
 
-$EXEC_CMD mpirun -np $PBS_NP lmp -in in.min
+# also adjust the partition number in the in.neb.sivac file
+# variable        u uloop 22
+mpirun -np $PBS_NP -hostfile $PBS_NODEFILE $EXEC_CMD lmp -partition 22x4 -in in.neb.sivac
+# mpirun -np $PBS_NP -hostfile $PBS_NODEFILE --mca pml ucx --mca btl ^openib $EXEC_CMD lmp -partition 22x4 -in in.neb.sivac
