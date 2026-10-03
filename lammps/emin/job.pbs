@@ -38,13 +38,8 @@
 # go to the job working directory
 cd $PBS_O_WORKDIR
 
-module load lammps/12Dec2018-i-14.0.3.174-impi-5.0.2.044
-export LAMMPS_EXECUTABLE=lammps
+# if you need to run jobs on multiple nodes, you need to load compatible host
+# MPI module, see NEB example.
+module load lammps/2025.07.22.2-gnu
 
-## Uncomment the lines below module to enable the use of GPU-accelerated version
-## Also, please submit the job to a GPU enabled queue e.g., `#PBS -q GOF`
-# export LAMMPS_EXECUTABLE=lmp
-# module load lammps/2022.01.07-g-11.2.0-ompi-4.1.1-cuda-11.5
-# cp $PBS_NODEFILE .exabyte/$PBS_JOBID
-
-mpirun -np $PBS_NP ${LAMMPS_EXECUTABLE} < in.min
+$EXEC_CMD mpirun -np $PBS_NP lmp -in in.min
