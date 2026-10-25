@@ -177,3 +177,9 @@ def dptrain(fjson="train.json"):
     """Execute dp train with real-time logging to terminal and file."""
     cmd = f"dp train {fjson} 2>&1 | tee log_dp_train"
     os.system(cmd)
+
+
+def dpfreeze(fpb="graph.pb"):
+    """Freeze latest checkpoint into graph.pb."""
+    cmd = f"dp freeze -o {fpb} 2>&1 | tee log_dp_freeze"
+    os.system(cmd)
