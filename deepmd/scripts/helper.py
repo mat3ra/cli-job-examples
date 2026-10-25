@@ -2,6 +2,31 @@
 """DeePMD helper functions created by Mat3ra.com"""
 
 def qe2dp(data_dir, ext):
+    """
+    Convert Quantum ESPRESSO output files into a DeePMD-kit training dataset.
+
+    Recursively searches `data_dir` for files matching `ext` (e.g. QE `pwscf.out`-style
+    or XML output read via ASE), normalizes their line endings, concatenates every
+    frame found into a single ASE trajectory, and converts that trajectory into
+    DeePMD's raw and compressed npy formats using dpdata.
+
+    Parameters
+    ----------
+    data_dir : str
+        Path to the directory tree containing Quantum ESPRESSO output files to convert.
+        The directory is copied (not modified in place) before processing.
+    ext : str
+        File extension (without the leading dot) identifying which files under
+        `data_dir` to read as ASE-compatible structures (e.g. "out", "xml").
+
+    Side Effects
+    ------------
+    - Creates and removes a temporary `./tmp` working copy of `data_dir`.
+    - Writes and then deletes an intermediate `./deepmd.traj` ASE trajectory file.
+    - Writes the final dataset to a `./deepmd` directory in both raw and npy formats.
+    - Files that ASE fails to parse are skipped with a printed warning rather than
+      aborting the conversion.
+    """
     from ase.io import read, write
     from ase.io import Trajectory
     import dpdata
