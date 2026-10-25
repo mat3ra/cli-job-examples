@@ -57,3 +57,14 @@ def qe2dp(data_dir, ext):
     d_ase.to_deepmd_npy('deepmd')
     os.system('rm deepmd.traj')
     os.system('rm -rf tmp')
+
+
+def get_deepmd_list(data_dir="./deepmd"):
+    """Get list of DeePMD system directories, ignoring hidden files."""
+    return sorted(
+        [
+            d
+            for d in os.listdir(data_dir)
+            if os.path.isdir(os.path.join(data_dir, d)) and not d.startswith(".")
+        ]
+    )
