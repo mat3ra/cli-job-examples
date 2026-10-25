@@ -97,7 +97,8 @@ def calculate_max_nbor_size(data_dir, symbols, rcut, scale):
     max_nbor_size = []
     for line in (result.stdout + result.stderr).splitlines():
         if "max_nbor_size:" in line:
-            tmp = re.findall(r"\d+", line)
+            after_marker = line.split("max_nbor_size:", 1)[1]
+            tmp = re.findall(r"\d+", after_marker)
             max_nbor_size = [int(float(n) * scale) for n in tmp]
             break
 
