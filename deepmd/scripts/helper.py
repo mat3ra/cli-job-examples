@@ -171,3 +171,9 @@ def create_deepmd_json(data_dir, dp_list, rcut, num_steps, prec="low"):
 
     with open("./train.json", "w") as f:
         json.dump(config, f, indent=4)
+
+
+def dptrain(fjson="train.json"):
+    """Execute dp train with real-time logging to terminal and file."""
+    cmd = f"dp train {fjson} 2>&1 | tee log_dp_train"
+    os.system(cmd)
