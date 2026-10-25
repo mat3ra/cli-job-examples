@@ -74,10 +74,15 @@ def get_deepmd_list(data_dir="./deepmd"):
     )
 
 
-def extract_symbols(folder_name):
-    """Extract chemical element symbols from formula name (e.g. 'La24Li40Nb16O96')."""
-    raw_splits = re.split(r"[0-9]", folder_name)
-    return [s for s in raw_splits if s != ""]
+def read_type_map(system_dir):
+    """Read the atom type names from a dpdata-generated 'type_map.raw' file.
+
+    dpdata.MultiSystems keeps one unified type_map across every converted system,
+    so this file (not the system directory's formula-like name) is the only
+    authoritative source for the type_map a system's data was written with.
+    """
+    with open(os.path.join(system_dir, "type_map.raw")) as f:
+        return [line.strip() for line in f if line.strip()]
 
 
 def calculate_max_nbor_size(data_dir, symbols, rcut, scale):
@@ -113,7 +118,7 @@ def create_deepmd_json(data_dir, dp_list, rcut, num_steps, prec="low"):
         )
     scale = scale_map[prec]
 
-    symbols = extract_symbols(dp_list[0])
+    symbols = read_type_map(os.path.join(data_dir, dp_list[0]))
     max_nbor_size = calculate_max_nbor_size(data_dir, symbols, rcut, scale)
     systems = [
         os.path.join(data_dir, l) + "/"
