@@ -68,3 +68,9 @@ def get_deepmd_list(data_dir="./deepmd"):
             if os.path.isdir(os.path.join(data_dir, d)) and not d.startswith(".")
         ]
     )
+
+
+def extract_symbols(folder_name):
+    """Extract chemical element symbols from formula name (e.g. 'La24Li40Nb16O96')."""
+    raw_splits = re.split(r"[0-9]", folder_name)
+    return [s for s in raw_splits if s != ""]
