@@ -98,3 +98,76 @@ def calculate_max_nbor_size(data_dir, symbols, rcut, scale):
         )
 
     return max_nbor_size
+
+
+def create_deepmd_json(data_dir, dp_list, rcut, num_steps, prec="low"):
+    """Generate train.json."""
+    scale_map = {"low": 1.0, "medium": 1.5, "high": 2.0}
+    if prec not in scale_map:
+        raise ValueError(
+            f"Invalid prec '{prec}'. Must be 'low', 'medium', or 'high'."
+        )
+    scale = scale_map[prec]
+
+    symbols = extract_symbols(dp_list[0])
+    max_nbor_size = calculate_max_nbor_size(data_dir, symbols, rcut, scale)
+    systems = [
+        os.path.join(data_dir, l) + "/"
+        for l in dp_list
+    ]
+
+    config = {
+        "_comment": " model parameters",
+        "model": {
+            "type_map": symbols,
+            "descriptor": {
+                "type": "se_e2_a",
+                "sel": max_nbor_size,
+                "rcut_smth": 0.50,
+                "rcut": rcut,
+                "neuron": [25, 50, 100],
+                "resnet_dt": False,
+                "axis_neuron": 16,
+                "seed": 1,
+            },
+            "fitting_net": {
+                "neuron": [240, 240, 240],
+                "resnet_dt": True,
+                "seed": 1,
+            },
+        },
+        "learning_rate": {
+            "type": "exp",
+            "decay_steps": 5000,
+            "start_lr": 0.001,
+            "stop_lr": 3.51e-8,
+        },
+        "loss": {
+            "type": "ener",
+            "start_pref_e": 0.02,
+            "limit_pref_e": 1,
+            "start_pref_f": 1000,
+            "limit_pref_f": 1,
+            "start_pref_v": 0,
+            "limit_pref_v": 0,
+        },
+        "training": {
+            "training_data": {
+                "systems": systems,
+                "batch_size": "auto",
+            },
+            "validation_data": {
+                "systems": systems,
+                "batch_size": 1,
+                "numb_btch": 3,
+            },
+            "numb_steps": num_steps,
+            "seed": 10,
+            "disp_file": "lcurve.out",
+            "disp_freq": 100,
+            "save_freq": 1000,
+        },
+    }
+
+    with open("./train.json", "w") as f:
+        json.dump(config, f, indent=4)
