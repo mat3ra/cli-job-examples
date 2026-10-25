@@ -74,3 +74,27 @@ def extract_symbols(folder_name):
     """Extract chemical element symbols from formula name (e.g. 'La24Li40Nb16O96')."""
     raw_splits = re.split(r"[0-9]", folder_name)
     return [s for s in raw_splits if s != ""]
+
+
+def calculate_max_nbor_size(data_dir, symbols, rcut, scale):
+    """Run dp neighbor-stat and apply buffer scale."""
+    cmd = ["dp", "neighbor-stat", "-s", data_dir, "-r", str(rcut), "-t"] + symbols
+    result = subprocess.run(cmd, capture_output=True, text=True)
+
+    with open("neigh-stat.log", "w") as f:
+        f.write(result.stdout)
+        f.write(result.stderr)
+
+    max_nbor_size = []
+    for line in (result.stdout + result.stderr).splitlines():
+        if "max_nbor_size:" in line:
+            tmp = re.findall(r"\d+", line)
+            max_nbor_size = [int(float(n) * scale) for n in tmp]
+            break
+
+    if not max_nbor_size:
+        raise RuntimeError(
+            "Could not parse 'max_nbor_size' from neighbor-stat output. Check 'neigh-stat.log'."
+        )
+
+    return max_nbor_size
