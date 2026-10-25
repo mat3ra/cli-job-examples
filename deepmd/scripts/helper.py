@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 """DeePMD helper functions created by Mat3ra.com"""
+import json
+import os
+import re
+import subprocess
 
 def qe2dp(data_dir, ext):
     """
