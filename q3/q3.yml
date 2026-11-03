@@ -1,0 +1,38 @@
+material: material.json
+
+model:
+  type: dft
+  subtype: gga
+  functional: pbe
+
+method:
+  type: pseudopotential
+  subtype: ultrasoft
+
+  pseudopotentials:
+    Si: /export/share/pseudo/si/gga/pbe/gbrv/1.0/us/si_pbe_gbrv_1.0.upf
+
+  cutoffs:
+    wavefunction: 40.0
+    density: 200.0
+
+  scf:
+    convergence_threshold: 1.0e-9
+    max_iterations: 100
+
+    smearing:
+      type: gaussian
+      degauss: 0.005
+
+    mixing:
+      beta: 0.3
+      mode: broyden
+
+    kgrid:
+      dimensions: [10, 10, 10]
+      shifts: [0, 0, 0]
+
+control:
+  calculation: scf
+  prefix: si
+  outdir: ./outdir/
