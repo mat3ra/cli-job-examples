@@ -28,14 +28,6 @@ method:
         - 0
         - 0
 control:
-  calculation: band_structure
+  calculation: scf
   outdir: ./output
   prefix: si_bands_us
-  band_path:
-    - "G"
-    - "X"
-    - "W"
-    - "K"
-    - "G"
-    - "L"
-  band_path_points_per_segment: 30

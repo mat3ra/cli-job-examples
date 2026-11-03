@@ -44,6 +44,14 @@ cd $PBS_O_WORKDIR
 # EXEC_CMD is set via `module add` above
 # EXEC_CMD="apptainer exec --bind /export,/scratch,/dropbox,/cluster-001-share /export/compute/software/applications/q3/2026.10.31-0-mpi/image.sif"
 
-# run the calculation: the MPI launcher is part of the container, hence `mpirun` follows $EXEC_CMD
-# results are written to output/si_bands_us_results.json, as set in the `control` section of q3.yml
-$EXEC_CMD mpirun -np $PBS_NP q3 q3.yml > q3.out
+# the band structure takes two runs sharing outdir and prefix:
+#   1. SCF converges the charge density on a uniform k-grid and saves the effective potential
+#   2. NSCF reads that potential and computes the eigenvalues along the k-point path
+# the NSCF run needs one MPI rank per k-point pool, hence `--pools` equal to the rank count;
+# the SCF run uses the same topology to save the checkpoint that the NSCF run reads
+$EXEC_CMD mpirun -np $PBS_NP q3 --pools $PBS_NP q3_scf.yml > q3_scf.out
+
+# keep the SCF results: the NSCF run writes to the same output/si_bands_us_results.json
+cp output/si_bands_us_results.json output/si_bands_us_scf_results.json
+
+$EXEC_CMD mpirun -np $PBS_NP q3 --pools $PBS_NP q3_bands.yml > q3_bands.out
