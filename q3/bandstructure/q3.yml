@@ -1,0 +1,41 @@
+material: material.json
+model:
+  type: dft
+  subtype: gga
+  functional: pbe
+method:
+  type: pseudopotential
+  subtype: ultrasoft
+  cutoffs:
+    wavefunction: 40.0
+    density: 200.0
+  pseudopotentials:
+    Si: /export/share/pseudo/si/gga/pbe/gbrv/1.0/us/si_pbe_gbrv_1.0.upf
+  scf:
+    convergence_threshold: 1.0e-08
+    number_of_bands: 12
+    mixing:
+      mode: broyden
+      beta: 0.7
+      ndim: 8
+    kgrid:
+      dimensions:
+        - 8
+        - 8
+        - 8
+      shifts:
+        - 0
+        - 0
+        - 0
+control:
+  calculation: band_structure
+  outdir: ./output
+  prefix: si_bands_us
+  band_path:
+    - "G"
+    - "X"
+    - "W"
+    - "K"
+    - "G"
+    - "L"
+  band_path_points_per_segment: 30
