@@ -47,11 +47,9 @@ cd $PBS_O_WORKDIR
 # the band structure takes two runs sharing outdir and prefix:
 #   1. SCF converges the charge density on a uniform k-grid and saves the effective potential
 #   2. NSCF reads that potential and computes the eigenvalues along the k-point path
-# the NSCF run needs one MPI rank per k-point pool, hence `--pools` equal to the rank count;
-# the SCF run uses the same topology to save the checkpoint that the NSCF run reads
-$EXEC_CMD mpirun -np $PBS_NP q3 --pools $PBS_NP q3_scf.yml > q3_scf.out
+$EXEC_CMD mpirun -np $PBS_NP q3 q3_scf.yml > q3_scf.out
 
 # keep the SCF results: the NSCF run writes to the same output/si_bands_us_results.json
 cp output/si_bands_us_results.json output/si_bands_us_scf_results.json
 
-$EXEC_CMD mpirun -np $PBS_NP q3 --pools $PBS_NP q3_bands.yml > q3_bands.out
+$EXEC_CMD mpirun -np $PBS_NP q3 q3_bands.yml > q3_bands.out
