@@ -53,3 +53,10 @@ $EXEC_CMD mpirun -np $PBS_NP q3 q3_scf.yml > q3_scf.out
 cp outdir/si_results.json outdir/si_scf_results.json
 
 $EXEC_CMD mpirun -np $PBS_NP q3 q3_bands.yml > q3_bands.out
+
+# plot the band structure relative to the Fermi energy of the SCF run, into bandstructure.png,
+# using matplotlib from a Python virtual environment created in the job directory
+module add python
+python3 -m venv .venv
+.venv/bin/pip install --quiet --no-cache-dir matplotlib
+.venv/bin/python plot_bandstructure.py
