@@ -15,7 +15,6 @@ Quantum ESPRESSO  | [espresso/gpu](espresso/gpu/job.gpu.pbs)         | CUDA/GPU 
 Quantum ESPRESSO  | [espresso/neb.x](espresso/neb.x/job.neb.pbs)     | Nudged Elastic Band calculation with QE neb.x: Diffusion of Nitrogen in an Aluminum matrix.
 VASP              | [vasp/](vasp/job.pbs)                            | Self-consistent total energy calculation for FCC Silicon with VASP (same as QE above).
 Q3                | [q3/scf](q3/scf/job.pbs)                         | Self-consistent total energy calculation for FCC Silicon with Quantum 3xplorer (Q3) (same as QE above).
-Q3                | [q3/bandstructure](q3/bandstructure/job.pbs)     | Electronic band structure of FCC Silicon with Q3: SCF run followed by a non-self-consistent run along the G-X-W-K-G-L path, and a script to plot it.
 DeePMD            | [deepmd/train_mlff_qe-cp-traj](deepmd/README.md) | Constructing Machine-learned Force Field using ab-initio data, neural networks, and further deployment using molecular dynamics package (LAMMPS).
 LAMMPS            | [lammps/](lammps/README.md)                      | Basic Molecular Dynamics run with LAMMPS for Copper using Lennard-Jones potential or EAM potential.
 LAMMPS+M3GNet     | [lammps/m3gnet](lammps/m3gnet/job.pbs)           | LAMMPS using M3GNet pair potential.
@@ -102,7 +101,6 @@ The folder structure (circa 2024-12) is as follows:
 │    └── m3gnet
 ├── nwchem
 ├── q3
-│    ├── bandstructure
 │    └── scf
 ├── sisso
 │    ├── classification
