@@ -1,5 +1,6 @@
 {
     "name": "Si, Silicon, FCC (Fd-3m) 3D (Bulk), mp-149",
+    "description": "Similar material data may be obtained from @mat3ra/standata: https://github.com/mat3ra/standata/tree/main/data/materials or https://next-gen.materialsproject.org/materials/",
     "lattice": {
         "type": "FCC",
         "a": 3.867,
