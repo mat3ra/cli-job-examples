@@ -49,7 +49,7 @@ cd $PBS_O_WORKDIR
 #   2. NSCF reads that potential and computes the eigenvalues along the k-point path
 $EXEC_CMD mpirun -np $PBS_NP q3 q3_scf.yml > q3_scf.out
 
-# keep the SCF results: the NSCF run writes to the same output/si_bands_us_results.json
-cp output/si_bands_us_results.json output/si_bands_us_scf_results.json
+# keep the SCF results: the NSCF run writes to the same outdir/si_results.json
+cp outdir/si_results.json outdir/si_scf_results.json
 
 $EXEC_CMD mpirun -np $PBS_NP q3 q3_bands.yml > q3_bands.out

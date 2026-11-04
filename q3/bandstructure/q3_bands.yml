@@ -1,4 +1,5 @@
-# outdir and prefix match q3_scf.yml: this run reads the effective potential saved by the SCF run
+# outdir and prefix match q3_scf.yml (the SCF example's input): this run reads the effective
+# potential saved by the SCF run
 material: material.json
 model:
   type: dft
@@ -18,8 +19,8 @@ control:
   # a non-self-consistent run; `calculation: bands` would mean the multi-step band_structure
   # workflow, which the q3 binary refuses
   calculation: nscf
-  outdir: ./output
-  prefix: si_bands_us
+  prefix: si
+  outdir: ./outdir/
   # the q3 binary does not generate k-points from band_path, so kpoints_list spells out the path;
   # band_path tells the solver where the segments of kpoints_list start, so that it does not carry
   # wavefunctions across a change of path direction
