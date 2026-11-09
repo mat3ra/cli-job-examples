@@ -1,0 +1,26 @@
+{
+    "name": "Si, Silicon, FCC (Fd-3m) 3D (Bulk), mp-149",
+    "description": "Similar material data may be obtained from @mat3ra/standata: https://github.com/mat3ra/standata/tree/main/data/materials or https://next-gen.materialsproject.org/materials/",
+    "lattice": {
+        "type": "FCC",
+        "a": 3.867,
+        "b": 3.867,
+        "c": 3.867,
+        "alpha": 60,
+        "beta": 60,
+        "gamma": 60,
+        "units": { "length": "angstrom", "angle": "degree" }
+    },
+    "basis": {
+        "units": "crystal",
+        "elements": [
+            { "id": 0, "value": "Si" },
+            { "id": 1, "value": "Si" }
+        ],
+        "coordinates": [
+            { "id": 0, "value": [0.0, 0.0, 0.0] },
+            { "id": 1, "value": [0.25, 0.25, 0.25] }
+        ]
+    },
+    "isNonPeriodic": false
+}

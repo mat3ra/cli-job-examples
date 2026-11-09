@@ -23,9 +23,6 @@
 #PBS -l ppn=44
 #PBS -l walltime=00:00:30:00
 #PBS -q OF
-## Note: GOF queue is not meant for running CPU only jobs (please use a CPU
-## queue instead e.g., OR, OF), you will be charged for GPU instance. Here we
-## wanted to compare CPU vs. GPU performance on the same hardware.
 ##PBS -m abe
 ##PBS -M info@exabyte.io
 #
@@ -50,4 +47,4 @@ if [ ! -f "./n_pbe_gbrv_1.2.upf" ]; then
     cp /export/share/pseudo/n/gga/pbe/gbrv/1.2/us/n_pbe_gbrv_1.2.upf .
 fi
 
-mpirun -np $PBS_NP -hostfile $PBS_NODEFILE $EXEC_CMD neb.x -ni 2 -in neb.AlN.in | tee neb.AlN.out
+mpirun -np $PBS_NP -hostfile $PBS_NODEFILE --mca pml ucx --mca btl ^openib $EXEC_CMD neb.x -ni 2 -in neb.AlN.in | tee neb.AlN.out

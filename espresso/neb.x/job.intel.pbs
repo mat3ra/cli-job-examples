@@ -1,0 +1,52 @@
+#!/bin/bash
+# ---------------------------------------------------------------- #
+#                                                                  #
+#  Example job submission script for Mat3ra.com platform           #
+#                                                                  #
+#  Shows resource manager directives for:                          #
+#                                                                  #
+#    1. the name of the job                (-N)                    #
+#    2. the number of nodes to be used     (-l nodes=)             #
+#    3. the number of processors per node  (-l ppn=)               #
+#    4. the walltime in dd:hh:mm:ss format (-l walltime=)          #
+#    5. queue                              (-q) D, OR, OF, SR, SF  #
+#    6. merging standard output and error  (-j oe)                 #
+#    7. email about job abort, begin, end  (-m abe)                #
+#    8. email address to use               (-M)                    #
+#                                                                  #
+#  For more info visit https://docs.mat3ra.com/jobs-cli/overview/  #
+# ---------------------------------------------------------------- #
+
+#PBS -N NEB-Test
+#PBS -j oe
+#PBS -l nodes=2
+#PBS -l ppn=44
+#PBS -l walltime=00:00:30:00
+#PBS -q OF
+##PBS -m abe
+##PBS -M info@exabyte.io
+#
+## Uncomment the line below and put a desired project name, e.g.:
+## "seminar-default" or "john-project"
+## NOTE: this is required when using organizational accounts.
+## more at https://docs.mat3ra.com/jobs-cli/batch-scripts/directives/.
+## The job will be charged to the corresponding project.
+## When commented out, the default project for user is assumed.
+##PBS -A <PROJECT_NAME_IN_ACCOUNTING_SYSTEM>
+
+module load espresso/7.5-host-intel-2023.1-libxc-7.0
+
+cd $PBS_O_WORKDIR
+
+# copy pseudos
+if [ ! -f "./al_pbe_gbrv_1.0.upf" ]; then
+    cp /export/share/pseudo/al/gga/pbe/gbrv/1.0/us/al_pbe_gbrv_1.0.upf .
+fi
+
+if [ ! -f "./n_pbe_gbrv_1.2.upf" ]; then
+    cp /export/share/pseudo/n/gga/pbe/gbrv/1.2/us/n_pbe_gbrv_1.2.upf .
+fi
+
+# for neb.x jobs using Intel MPI, we need to use -perhost flag explicitly,
+# tested on Azure cluster with Infiniband interconnect
+mpirun -np $PBS_NP -hostfile $PBS_NODEFILE -perhost $((PBS_NP / PBS_NUM_NODES)) $EXEC_CMD neb.x -ni 2 -in neb.AlN.in | tee neb.AlN.out
