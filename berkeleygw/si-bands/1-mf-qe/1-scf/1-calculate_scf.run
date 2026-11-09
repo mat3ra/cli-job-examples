@@ -1,0 +1,3 @@
+#!/bin/bash
+: "${EXEC_CMD_QE:='mpirun -np 2'}"
+$EXEC_CMD_QE pw.x -in scf.in | tee scf.out

@@ -1,0 +1,3 @@
+#!/bin/bash
+: "${EXEC_CMD_QE:='mpirun -np 2'}"
+$EXEC_CMD_QE pw2bgw.x -in pw2bgw.in | tee pw2bgw.out
